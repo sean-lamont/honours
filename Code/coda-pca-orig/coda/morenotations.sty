@@ -1,0 +1,251 @@
+%NIPS 2018
+
+\newcommand{\papertitle}{Representation Learning of Compositional Data}
+\newcommand{\SM}{SM}
+\newcommand{\supplement}{Supplement}
+
+\newcommand{\hessian}{\matrice{h}}
+
+\newcommand{\CoDAPCA}{\textsc{CoDA-PCA}}
+\newcommand{\surrogateCoDAPCA}{\textsc{s-}\CoDAPCA}
+\newcommand{\CoDAAE}{\textsc{CoDA-Autoencoder}}
+
+%%
+
+\newcommand{\nn}{\textsc{nn}}
+\newcommand{\optim}[1]{#1_{\hspace{-0.1cm}\mbox{\tiny{$\odot$}}}}
+\newcommand{\ophi}{\optim{u}}
+\newcommand{\ocla}{\optim{\ve{w}}}
+\newcommand{\ohmu}{\optim{\ve{\mu}}}
+\newcommand{\clrlog}{\ve{c}_{\mbox{\tiny{\textsc{kl}}}}}
+
+%
+
+\usepackage{bm,amsmath,amsfonts,multirow,nicefrac,xr}
+\usepackage{acronym,eucal}
+
+
+%% CoDA Defs
+
+
+\newcommand{\varphidagger}{\check{\varphi}}
+\newcommand{\Xdagger}{\check{\mathcal{X}}}
+\newcommand{\vexdagger}{\check{\ve{x}}}
+\newcommand{\veydagger}{\check{\ve{y}}}
+
+
+\newcommand{\clrphi}{\ve{c}_\varphi}
+\newcommand{\ilrphi}{{\iota_\varphi}}
+
+\newcommand{\kl}{{\textsc{kl}}}
+
+%% General defs
+
+\usepackage{tikz}
+\usepackage[framemethod=TikZ]{mdframed}
+\mdfdefinestyle{MyFrame}{%
+    linecolor=gray,
+    outerlinewidth=2pt,
+    roundcorner=10pt,
+    innertopmargin=0.5\baselineskip,
+    innerbottommargin=0.5\baselineskip,
+    innerrightmargin=10pt,
+    innerleftmargin=10pt}
+
+
+\usepackage{xcolor,colortbl}
+\definecolor{Gray}{gray}{0.85}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+
+\newcommand{\defeq}{\stackrel{\mathrm{.}}{=}}
+\newcommand{\expect}{\mathbb{E}}
+\newcommand{\pr}{\mathbb{P}}
+\newcommand{\spsr}{\textsc{spsl}}
+\newcommand{\psc}{\textsc{psc}}
+
+\newcommand{\sbj}{\Sigma_{m}^{\beta, j_*}}
+\newcommand{\sbm}{\Sigma_{m}^{m_*}}
+\newcommand{\sbnj}{\Sigma_{m}^{\beta}}
+\newcommand{\dbi}{\textsc{dbi}}
+
+\newcommand*{\myfont}{\fontfamily{phv}\selectfont}
+
+
+\usepackage{mathrsfs}
+\newcommand{\Y}{\mathsf{Y}}
+\newcommand{\I}{\mathsf{I}}
+\newcommand{\X}{\mathsf{X}}
+\newcommand{\A}{\mathsf{A}}
+\newcommand{\C}{\mathsf{C}}
+\newcommand{\U}{\mathsf{U}}
+\newcommand{\V}{\mathsf{V}}
+\newcommand{\N}{\mathsf{N}}
+\newcommand{\M}{\mathsf{M}}
+\newcommand{\R}{\mathsf{R}}
+\newcommand{\F}{\mathsf{F}}
+\newcommand{\B}{\mathsf{B}}
+\newcommand{\E}{\mathsf{E}}
+\newcommand{\G}{\mathsf{G}}
+\newcommand{\D}{\mathsf{D}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\stream}{\mathsf{S}}
+
+\newcommand{\XCal}{\mathcal{X}}
+\newcommand{\ICal}{\mathcal{I}}
+\renewcommand{\top}{\intercal}
+
+%\renewcommand{\Re}{\mathbb{R}}\newcommand{\Se}{\mathbb{S}} % hollow R/S
+\newcommand{\Se}{\mathfrak{S}} % for frac R/S
+
+%\newcommand{\varphidagger}{\check{\varphi}}
+\newcommand{\phidagger}{{\check{\phi}}}
+\newcommand{\pidagger}{{\check{\pi}}}
+\newcommand{\bdis}{\textsc{BDis}}
+\newcommand{\bdiv}{\textsc{BDiv}}
+
+%% NEW RADO DEFS TO INCLUDE
+
+
+\newcommand{\lab}[1]{\mbox{{\tiny\myfont #1}}}
+\newcommand{\labsmall}[1]{\mbox{{\small\myfont #1}}}
+
+
+\newcommand{\loglossrado}{F^r_{\log}}
+\newcommand{\logloss}{F_{\log}}
+
+\newcommand{\explossrado}{F^r_{\exp}}
+\newcommand{\slope}{\textsc{slope}}
+
+
+\newcommand{\lap}{Lap}
+
+
+\newcommand{\dpfreal}{\textsc{DP-Feat}}
+\newcommand{\dpnorm}{\textsc{DP-Norm}}
+\newcommand{\dprcex}{\textsc{DP-ExToRados}}
+
+\newcommand{\piup}{\uppi}
+\newcommand{\muup}{\upmu}
+
+
+\newcommand{\rado}{\piup}
+\newcommand{\meano}{\muup}
+\newcommand{\radoboost}{\textsc{RadoBoost}}
+
+\newcommand{\radaboostNoL}{$\Omega$-\textsc{R.AdaBoost}}
+
+\newcommand{\adaboostR}{\textsc{AdaBoost$_{\mathbb{R}}$}}
+\newcommand{\adaboostS}{\textsc{AdaBoost$_{\mathbb{R}}(S)$}}
+\newcommand{\adaboostSS}{\textsc{AdaBoost}}
+\newcommand{\adaboostSSS}{\textsc{AdaBoost$(n)$}}
+
+\newcommand{\weak}{\textsc{wl}}
+\newcommand{\pweak}{\textsc{b-wl}}
+\newcommand{\omegaweak}{\textsc{$\Omega$-wl}}
+
+\newcommand{\dprad}{\textsc{dp-rados}}
+
+\newcommand{\gwl}{\upgamma_{\textsc{wl}}}
+
+\newcommand{\sql}{\mathrm{sql}}
+\newcommand{\var}{\mathbb{V}}
+
+
+%% Older-like defs
+
+\newcommand{\prev}[1]{\textsc{prev}(#1)}
+
+
+\newcommand{\lpc}{\textsc{lpc}}
+\newcommand{\co}{\textsc{co}}
+
+
+
+\newcommand{\ve}[1]{\bm{#1}}
+\newcommand{\trace}[1]{\mathrm{tr}\left(#1\right)}
+\newcommand{\matrice}[1]{\mbox{\textsc{\small{#1}}}}
+
+\newcommand{\s}{\ell}
+
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{corollary}{Corollary}
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}[section]
+%\newtheorem{lemma}{Lemma}[section]
+
+\newenvironment{myproof}{{\bf Proof:} }{{ \cqfd }}
+\newenvironment{myproofsketch}{{\bf Proof sketch:} }{{ \cqfd}}
+\def\cqfd{\hfill\hbox{$\hbox{\vrule width 0.8pt
+\vbox to6pt{\hrule depth 0.8pt width 5.2pt
+\vfill\hrule depth 0.8pt}\vrule width 0.8pt}$}}
+
+\DeclareMathOperator*{\argmax}{arg\!\max~}
+\DeclareMathOperator*{\argmin}{arg\!\min~}
+
+%% Algos defs
+
+%% Matrix defs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ams tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% theorem and friends
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{theorem}
+\newcommand{\BlackBox}{\rule{1.5ex}{1.5ex}}  % end of proof
+\newcommand{\WhiteBox}{\raisebox{\depth}{\setlength{\fboxrule}{1pt}%
+  \setlength{\fboxsep}{.7ex}\fbox{}}}
+\newenvironment{proof}{\par\noindent{\bf Proof\ }}{\hfill\BlackBox\\[2mm]}
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{remark}[theorem]{Remark}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem{axiom}[theorem]{Axiom}
+\newenvironment{remark}{\par\noindent{\bf{Remark}\ }}{\hfill\WhiteBox}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fancy fonts
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{eucal}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% images
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% algorithms
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% graph drawing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[all]{xy}
+\CompileMatrices
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% comment tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\intset}[1]{\cbr{1..n}}
+\newcommand{\flexset}[2]{\cbr{{#1}_1, \ldots, {#1}_{#2}}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% comment tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand{\comment}[2]{\footnote{\bf\uppercase{#1: #2}}}

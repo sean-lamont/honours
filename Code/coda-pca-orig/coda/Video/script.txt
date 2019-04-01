@@ -1,0 +1,22 @@
+This video describes our NIPS 2018 paper titled
+Representation learning for compositional data.
+This paper is about exponential family PCA for compositional data (also known as CoDA).
+
+Let us unpack the three components:
+PCA is an unsupervised representation learning method that minimises the error of reconstruction between data matrix X and its low rank representation. Note that the error is measured using squared Frobenious norm.
+
+Exponential family PCA was introduced in NIPS 2002, enabling PCA on the parameters of probability distributions describing the data. It relies on a Bregman divergence, and we indicate the generator by phi. The generator of the Bregman divergence corresponds to the cumulant of the exponential family.
+
+Compositional data, CoDA for short is data that is proportional. Ratios are informative, and not absolute values. In other words each column of the matrix X is in a simplex. x now lies in the so-called Aitchison geometry, and data needs to be log transformed and normalized before further analysis. We focus on the centered log ratio transform (clr), where the normalizer is the geometric mean of the data.
+PCA for CoDA data proceeds by using the clr data.
+
+We propose a PCA method that combines the exponential family view and clr view. Observe that the squared Frobenious norm is obtained when we use the squared Euclidean distance as the generator of the Bregman divergence. Our main result shows an equivalence between the clr transformed data and the original normalized data.
+
+Before we describe our theoretical contribution, let us see what happens when we choose another generator, for example the one that results in the Kullback Leibler divergence. Consider a toy dataset in a simplex with 20 vertices, in 19 dimensions. The data consists of 20 arms, going from the center of a simplex to each of the vertices. We show the results of a projection to 2 dimensions. PCA can result in projected points lying outside the simplex. t-SNE does not respect the geometry of the space. Our method, CoDA PCA, produces a satisfying result.
+
+The technical hammer we use to show the equivalence is an extension of a result from NIPS 2016. For differentiable generator phi, and normalization function g, we define the normalized version of the data vectors and the Bregman generator. Our theorem relates the Bregman distortion on the normalized data to the Bregman distortion on unnormalized data, except the latter now has a different generator. The new part compared to 2016 is a remainder term which is a conformal divergence.
+
+Other results in the paper include:
+- a biconvex surrogate loss for CoDA-PCA
+- a generalization to autoencoders
+- empirical experiments on microbiome data

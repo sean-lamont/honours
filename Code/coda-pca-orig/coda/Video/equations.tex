@@ -1,0 +1,32 @@
+\mathsf{X}
+\mathbf{x}_i
+
+\mathbf{c}_{\mbox{\tiny{\textsc{kl}}}}(\bm{x}) := \log\left(\frac{\bm{x}}{g(\bm{x})}\right), \qquad
+g(\bm{x}) = \left(\prod_{j=1}^d x_j\right)^{\frac{1}{d}}
+
+
+D_\varphi(\mathsf{X}\,\Vert\,\nabla\varphi^\star(\mathsf{V}^\top \mathsf{A}))
+
+\varphi(\bm{x}) = \frac{1}{2}\|\bm{x}\|^2
+
+D_\varphi(\mathbf{c}_{\mbox{\tiny{\textsc{kl}}}}(\mathsf{X})\,\Vert\,\nabla\varphi^\star(\mathsf{V}^\top \mathsf{A}))
+
+D_\varphi(\check{\mathsf{X}}\,\Vert\,\nabla\varphi^\star(\mathsf{V}^\top \mathsf{A}))
+
+\varphi(z) = z \log z - z
+\varphi^\star(z) = \exp z
+
+D_{\mbox{\tiny{\textsc{kl}}}}(\check{\mathsf{X}}\,\Vert\,\exp(\mathsf{V}^\top \mathsf{A}))
+
+\varphi: \mathcal{X} \rightarrow \mathfrak{R}
+g : \mathcal{X} \rightarrow \mathfrak{R}\setminus\{0\}
+
+\check{\bm{x}} := \frac{\bm{x}}{g(\bm{x})}
+\quad\text{and}\quad
+\check{\varphi}(\bm{x}) :=
+g(\bm{x}) \cdot {\varphi}\left( \frac{\bm{x}}{g(\bm{x})} \right)
+
+
+g(\bm{x}) \cdot D_{\varphi}\left( \check{\bm{x}} \,\Vert\, \check{\bm{y}} \right)
+= D_{\check{\varphi}}\left( \bm{x} \,\Vert\, \bm{y}\right)
++ R_{\varphi, g}(\bm{x}\,\Vert\,\bm{y})

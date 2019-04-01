@@ -1,0 +1,105 @@
+\documentclass{beamer}
+%% Possible paper sizes: a0, a0b, a1
+%% Possible orientations: portrait, landscape
+%% Font sizes can be changed using the scale option.
+\usepackage[size=a0,orientation=portrait,scale=1.8]{beamerposter}
+\usetheme{LLT-poster}
+\usecolortheme{ComingClean}
+% \usecolortheme{Entrepreneur}
+% \usecolortheme{ConspiciousCreep}
+
+\newcommand{\defeq}{\stackrel{\mathrm{.}}{=}}
+%\renewcommand{\Re}{\mathbb{R}}\newcommand{\Se}{\mathbb{S}} % hollow R/S
+\newcommand{\Se}{\mathfrak{S}} % for frac R/S
+\newcommand{\varphidagger}{\check{\varphi}}
+\newcommand{\Xdagger}{\check{\mathcal{X}}}
+\newcommand{\vexdagger}{\check{\ve{x}}}
+\newcommand{\veydagger}{\check{\ve{y}}}
+\newcommand{\XCal}{\mathcal{X}}
+\usepackage{bm}
+\newcommand{\ve}[1]{\bm{#1}}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{libertine}
+\usepackage[scaled=0.92]{inconsolata}
+\usepackage[libertine]{newtxmath}
+
+%\usepackage{../morenotations}
+
+\title{Representation Learning of Compositional Data}
+\author[]{Marta Avalos-Fernandez$^\dagger$~~Richard Nock$^\ddagger$$^\S$$^\natural$~~Cheng Soon Ong$^\ddagger$$^\S$~~Julien Rouar$^\dagger$~~Ke Sun$^\ddagger$}
+% Optional foot image \footimage{\includegraphics[width=4cm]{IMG_1934.jpg}}
+\institute{$^\dagger$Universit\'e de Bordeaux%
+\hspace{2em}$^\ddagger$Data61%
+\hspace{2em}$^\S$the Australian National University
+\hspace{2em}$^\natural$the University of Sydney}
+
+\begin{document}
+\begin{frame}[fragile]\centering
+
+\begin{columns}[T]
+
+%%%% First Column
+\begin{column}{.46\textwidth}
+\begin{block}{Introduction}
+\end{block}
+
+\begin{block}{}
+\end{block}
+
+\begin{block}{}
+\end{block}
+\end{column}
+
+%%%% Second Column
+\begin{column}{.46\textwidth}
+
+\begin{block}{}
+\end{block}
+
+\begin{block}{}
+\end{block}
+\end{column}
+\end{columns}
+
+\begin{block}{}
+\begin{theorem}[Scaled Bregman Theorem with Remainder]\label{th00}
+For any 
+$\varphi: \XCal \rightarrow \Re$ and $g : \XCal \rightarrow \Re_*$ ($\Re_*=\Re\setminus\{0\}$)
+that are both differentiable, denoting
+\begin{equation*}
+  \check{\ve{x}} \defeq \frac{\ve{x}}{g(\ve{x})}
+  \quad\text{and}\quad
+  \check{\varphi}(\ve{x}) \defeq 
+  %g(\ve{x}) \cdot {\varphi}(\check{\ve{x}})  =  
+  g(\ve{x}) \cdot {\varphi}\left( \frac{\ve{x}}{g(\ve{x})} \right) \:\:,\label{defCHECKPHI}
+\end{equation*}
+the following holds true:
+  \begin{equation*}
+  g(\ve{x}) \cdot D_{\varphi}\left( \vexdagger \,\Vert\, \veydagger \right)
+  = D_{\varphidagger}\left( \ve{x} \,\Vert\, \ve{y}\right)
+  + R_{\varphi, g}(\ve{x}\,\Vert\,\ve{y})\:,\quad\forall
+  \ve{x}, \ve{y}\in \XCal\:\:,\label{defdagger}
+  \end{equation*}
+  where $R_{\varphi, g}(\ve{x}\,\Vert\,\ve{y}) \defeq \varphi^\star\left(\nabla\varphi(\veydagger)
+  \right)\cdot D_g(\ve{x}\,\Vert\,\ve{y})$ is called the \emph{remainder}.
+\end{theorem}
+\end{block}
+
+\begin{columns}
+\begin{column}{.46\textwidth}
+\begin{block}{Experiments}
+\end{block}
+\end{column}
+
+\begin{column}{.46\textwidth}
+\begin{block}{}
+\end{block}
+\begin{block}{}
+\end{block}
+\end{column}
+\end{columns}
+
+\end{frame}
+\end{document}
