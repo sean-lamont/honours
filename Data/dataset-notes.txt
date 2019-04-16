@@ -1,0 +1,40 @@
+Microbiome:
+
+Most data seems to be from human microbiome.
+
+More papers on microbiome as compositions:
+https://www.sciencedirect.com/science/article/pii/S1047279716300722
+https://www.sciencedirect.com/science/article/pii/S1047279716300734
+
+Github with Human Microbiome Data:
+https://github.com/twbattaglia/MicrobeDS
+
+Main Microbiome paper, use and compare with dataset for ak/op (human microbiome)
+
+Microbiome Notes:
+- Microbiome refers to the distribution of different microbial "species" at a target site.
+- Species classified into OTUs (operational taxonomic unit),
+ essentially pragmatic classification of species in absence of standard macroscopic organism
+ species classification
+- OTUs grouped wrt DNA sequence simlarity of a marker gene
+- 16S rRNA is the typical gene marker used, as it is highly conserved between species
+"the function of the 16S rRNA gene over time has not changed,
+ suggesting that random sequence changes are a more accurate measure of time (evolution)"
+
+Economics:
+
+
+Time Series:
+
+Trade Time Series: 
+(constrained by total sum per year i.e. proportion of spending per country)
+https://dfat.gov.au/trade/resources/trade-statistics/Pages/trade-time-series-data.aspx
+
+Labour Force Time Series:
+https://www.scb.se/contentassets/f6bcee6f397c4fd68db6452fc9643e68/the-time-series-analysis-of-compositional-data.pdf
+
+https://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/6202.0Feb%202019?OpenDocument
+
+
+Potentially Market Trade time series
+
