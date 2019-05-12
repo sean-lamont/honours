@@ -1,0 +1,21 @@
+- Find compositional datasets
+
+- Decide on overall approach. Candidates:
+	- LSTM for time series economics (or other) data
+
+	- "inverse" regression/classification, i.e. compositions as targets
+		- REGRESSION FOR COMPOSITIONAL DATA WITH COMPOSITIONAL DATA AS PREDICTOR VARIABLES WITH OR WITHOUT ZERO VALUES
+		- https://mpra.ub.uni-muenchen.de/67868/1/MPRA_paper_67868.pdf
+		- https://arxiv.org/pdf/1903.05036.pdf (Includes Dataset!!!)
+
+	- End to end optimisation, optimising a cost function on both the 
+	  classification/regression accuracy and the reconstruction error
+		- Need to think about why we care about reconstruction error
+			- In practice, PCA often improves performance on high dimensional data
+				- Serves almost as a way of regularising, as applying models to
+			  	raw data makes it hard to figure out what is actually 
+			  	causing a pattern
+			- Data processing inequality: information cannot be gained from processing
+			- Why do end to end? Possibly better generalisations since the dim reduction
+			  serves to reduce overfitting and allow the model to extract useful relationships
+			  out of the data  
