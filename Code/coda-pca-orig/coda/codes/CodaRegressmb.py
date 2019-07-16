@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+	#!/usr/bin/env python
 # coding: utf-8
 
 # In[1]:
@@ -59,15 +59,19 @@ class CoDA_Regress(nn.Module):
         return pred, reconstruction, A
 
 
-    def fit(self, X, y, lam, lr):
+    def fit(self, X, y, lam, lr, epochs = 10000, batch_size = 5):
 
         loss_function = Combined_Loss(lam)
         optim = torch.optim.Adam(self.parameters(), lr = lr)
 
-        for epoch in range(0,10000):
-            pred, recon, A = self.forward(torch.FloatTensor(X))
-            loss = loss_function(recon, torch.FloatTensor(X), pred, torch.FloatTensor(y))
+      
+        for epoch in range(0,epochs):
 
+
+            pred, recon, A = self.forward(torch.FloatTensor(X))
+
+            loss = loss_function(recon, torch.FloatTensor(X), pred, torch.FloatTensor(y))
+                
             optim.zero_grad()
 
             loss.backward()
@@ -100,11 +104,6 @@ class Combined_Loss(torch.nn.Module):
         self.lam = lam
 
     def forward(self,Y,X,y_hat,y):
-        #X is original data, Y is CoDA reconstruction, y is targets, y_hat
-        #input needs to be normalised by g(x) (geometric mean) for X_hat
-        #TODO centering matrix? Reduce mean? Mask for near zero values?
-
-        #extract reconstruction and original data from concatenation
         return  self.MSE(y_hat, y) + self.lam * self.CoDA_Loss(Y,X)
 
 class CoDA_Loss(torch.nn.Module):

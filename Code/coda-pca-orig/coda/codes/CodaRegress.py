@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+	#!/usr/bin/env python
 # coding: utf-8
 
 # In[1]:
@@ -64,7 +64,10 @@ class CoDA_Regress(nn.Module):
         loss_function = Combined_Loss(lam)
         optim = torch.optim.Adam(self.parameters(), lr = lr)
 
-        for epoch in range(0,10000):
+
+        prev_loss = np.inf
+
+        for epoch in range(0,5000):
             pred, recon, A = self.forward(torch.FloatTensor(X))
             loss = loss_function(recon, torch.FloatTensor(X), pred, torch.FloatTensor(y))
 
@@ -75,7 +78,8 @@ class CoDA_Regress(nn.Module):
 
             epoch += 1
 
-            if (epoch % 1000 == 0):
+
+            if (epoch % 100 == 0):
                 print("epoch {}, loss {}".format(epoch, loss))
         return
 
