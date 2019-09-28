@@ -55,7 +55,7 @@ class CoDA_Regress(nn.Module):
 
 
     def fit(self, X, y, lam, lr,  train_size, epochs = 10000):
-        PATH = os.getcwd()+"model weights"
+        PATH = os.path.join(os.getcwd(),"model_weights.pth")
         loss_function = Combined_Loss(lam)
         optim = torch.optim.Adam(self.parameters(), lr = lr)
 
@@ -70,7 +70,7 @@ class CoDA_Regress(nn.Module):
 
         prev_loss = np.inf
         best_val_loss = np.inf
-        cur_val_loss = 0
+        curr_val_loss = 0
         for epoch in range(0,epochs):
 
             pred, recon, A = self.forward(torch.FloatTensor(X_train))
@@ -86,27 +86,27 @@ class CoDA_Regress(nn.Module):
                 val_pred, val_recon, val_A = self.forward(torch.FloatTensor(X_val))
 
                 val_loss = loss_function(val_recon, torch.FloatTensor(X_val), val_pred, torch.FloatTensor(y_val))
-
                 curr_val_loss = val_loss.detach().numpy()
 
                 if (epoch % 100 == 0):
                     training_loss_arr.append(loss.detach().numpy())
                     val_loss_arr.append(curr_val_loss)
-            #     #keep the best weights (maybe do this every n iterations)
-            # if cur_val_loss < best_val_loss:
-            #     best_val_loss = cur_val_loss
-            #     torch.save(self.state_dict(), PATH)
+                #keep the best weights (maybe do this every n iterations)
+                if curr_val_loss < best_val_loss:
+                    best_val_loss = curr_val_loss
+                    torch.save(self.state_dict(), PATH)
+
 
 
             curr_loss = loss.detach().numpy()
 
             if np.abs(curr_loss - prev_loss) < 1e-18 or epoch == epochs-1:
-
-                # self.load_state_dict(torch.load(PATH))
+                if (len(X_val) > 0 ):
+                    print ("loading")
+                    self.load_state_dict(torch.load(PATH))
                 break
 
             prev_loss = curr_loss
-
             epoch += 1
 
             if (epoch % 1000 == 0):
@@ -148,7 +148,7 @@ class CoDA_Loss(torch.nn.Module):
     def forward(self,Y,X):
         #X is original data, Y is CoDA reconstruction
         X_check = check(X)
-        coda_loss =  torch.sum(torch.exp(torch.clamp(Y, -30, 30))) - torch.sum(X_check * Y)
+        coda_loss = torch.sum(torch.exp(torch.clamp(Y, -30, 30))) - torch.sum(X_check * Y)
         return coda_loss
 
 def check(X):

@@ -60,7 +60,7 @@ class CoDA_Cl(nn.Module):
 
 
     def fit(self, X, y, lam, lr,  train_size, epochs = 10000):
-        PATH = os.getcwd()+"model weights"
+        PATH = os.path.join(os.getcwd(),"model_weights.pth")
         loss_function = Combined_Loss(lam)
         optim = torch.optim.Adam(self.parameters(), lr = lr, weight_decay=0.05)
 
@@ -75,7 +75,7 @@ class CoDA_Cl(nn.Module):
 
         prev_loss = np.inf
         best_val_loss = np.inf
-        cur_val_loss = 0
+        curr_val_loss = 0
         for epoch in range(0,epochs):
 
             pred, recon, A = self.forward(torch.FloatTensor(X_train))
@@ -94,20 +94,22 @@ class CoDA_Cl(nn.Module):
 
                 curr_val_loss = val_loss.detach().numpy()
 
-                if (epoch % 100 == 0 and epoch > 1000):
+                if (epoch % 50 == 0):
                     training_loss_arr.append(loss.detach().numpy())
                     val_loss_arr.append(curr_val_loss)
                 #keep the best weights (maybe do this every n iterations)
-            if cur_val_loss < best_val_loss:
-                best_val_loss = cur_val_loss
+            if curr_val_loss < best_val_loss:
+                best_val_loss = curr_val_loss
                 torch.save(self.state_dict(), PATH)
 
 
             curr_loss = loss.detach().numpy()
 
-            # if np.abs(curr_loss - prev_loss) < 1e-18 or epoch == epochs-1:
-            #
-            #     break
+            if np.abs(curr_loss - prev_loss) < 1e-18 or epoch == epochs-1:
+                if (len(X_val) > 0 ):
+                    #print ("loading")
+                    self.load_state_dict(torch.load(PATH))
+                break
 
             prev_loss = curr_loss
 
