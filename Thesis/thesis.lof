@@ -1,0 +1,11 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces The 2D Simplex}}{6}{figure.2.1}% 
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {An RGB Colour Triangle is an example of a 2D simplex in 3D space}}}{6}{figure.2.1}% 
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The standard 2D simplex as a subset of $\PazoBB {R}^3$. The shaded region corresponds to the set $S^{2} = \{\mathbf {x} \in \PazoBB {R}^3 : x_1 + x_2 + x_3 = 1\}$}}}{6}{figure.2.1}% 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces End to End ("Coda-to-end") Model Diagram}}{21}{figure.3.1}% 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Hyperparameter selection loop for model evaluation: $\mathbf {X_{train}}$ is partitioned (here into 5). The final $\lambda ^*$ is selected as the best performing $\lambda _i$ on the mean inner cross validation score, $L(\lambda _i)$. $\lambda ^*$ is then used for training on $\mathbf {X_{train}}$, and this is repeated for each training split in the outer cross validation loop. }}{24}{figure.4.1}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }

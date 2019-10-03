@@ -11,7 +11,7 @@ K-Fold cross validation is the standard approach for model evaluation in most ma
 
 This approach is highly unbiased, since the data is shuffled and so trained and tested on separate partitions of the data. In order for the model to perform well overall, it must do well on each partition of the data. This prevents a good model score being due to a lucky initial testing split. Likewise, if a model performs well on only some splits, then this suggests it does not generalise well.  
 
-Given the sensitivity of our model to the choice of $\lambda$, we use K-Fold cross validation with an additional inner loop for hyperparameter selection. The high level idea of this approach is as follows: Given a set of hyperparameters $\Lambda = \{\lambda_1 ,.., \lambda_n\}$. For each training partition of the initial K-Fold, $X_k$ we do another cross validation of $X_k$, for each $\lambda \in \Lambda$. The value of $\lambda$ which results in the best mean cross validation score is then used to train the model on $X_k$. Since we still do not have access to the testing data, this method will still give valid results. There is a large computational cost to this approach, with training taking $O(k|\Lambda|)$. This method, found in \cite{walder} is primarily useful for small datasets, due to the high associated computational costs. As such, it was performed on the initial testing of the model with the Aitchinson data.     
+Given the sensitivity of our model to the choice of $\lambda$, one solution is to use K-Fold cross validation with an additional inner loop for hyperparameter selection. The high level idea of this approach is as follows: Given a set of hyperparameters $\Lambda = \{\lambda_1 ,.., \lambda_n\}$. For each training partition of the initial K-Fold, $X_k$ we do another cross validation of $X_k$, for each $\lambda \in \Lambda$. The value of $\lambda$ which results in the best mean cross validation score is then used to train the model on $X_k$. Since we still do not have access to the testing data, this method will still give valid results. There is a large computational cost to this approach, with training taking $O(k|\Lambda|)$. This method, found in \cite{walder} is primarily useful for small datasets, due to the high associated computational costs. As such, it was performed on the initial testing of the model with the Aitchinson data.     
 
 \begin{figure*}
     \centering
@@ -40,9 +40,13 @@ A useful technique in the training of machine learning algorithms is early stopp
 
 
 \subsubsection{Numerical Stability}
-The implementation of Machine Learning algorithms on digital computers often leads to numerical instability. Given that real numbers can only be approximated to a finite precision with floating point numbers, operations on very large or small numbers can lead to numbers beyond the scope of this representation. In addition, the finite precision means that there is an inherent error associated with operations on these numbers. These errors accumulate, and can lead to results which do not align with what it would be analytically. This has lead to the 
+The implementation of Machine Learning algorithms on digital computers often leads to numerical instability. Given that real numbers can only be approximated to a finite precision with floating point numbers, operations on very large or small numbers can lead to numbers beyond the scope of this representation. In addition, the finite precision means that there is an inherent error associated with operations on these numbers. These errors accumulate, and can lead to results which do not align with what it would be analytically. Even when a high precision is used, it is well known that matrix operations are particularly prone to numerical instability. Given that these form the basis for many machine learning algorithms, numerical analysis is an important consideration.
 
-when this precision is not sufficiently large. Even when a high precision is used, it is well known that matrix operations  
+clamping, NaN, exploding gradients, vanishing gradients, learning rates, local optima 
+
+
+
+
 
 
 

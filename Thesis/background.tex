@@ -73,6 +73,20 @@ Given compositional data lies on the simplex, analysis of these data are complic
 We note that $\mathbf{c}_{KL} : S^{d-1} \to  \mathbb{R}^d$ is a bijective map from $S^{d-1}$ to  $\mathbb{R}^d$ by observing the inverse function which is given by 
 $$\mathbf{c}_{KL}^{-1}(\mathbf{x}) = e^\mathbf{x} \prod_{i=1}^d e^{\frac{x_j}{1-d}}$$ ...
 
+
+\section{Optimisation}
+\label{optimisation}
+Most machine learning problems can fundamentally be considered as optimisation tasks. That is, we wish to find the extrema of a function, potentially given some constraints. For example, a regression problem can be reduced to the minimisation of the $l_2$ loss. These functions can occasionally be solved analytically, like in the regression case. It is much more common to use gradient based optimisation algorithms, as these analytic solutions are often intractable. Many variants of these algorithms exist, but they are all based on the idea of gradien descent: Given a differentiable function $f(\mathbf{x}) : \mathbb{R}^d \to \mathbb{R}$, the gradient descent algorithm is: (calculate gradient, specify learning rate, initialise $x^*$, step $x^{k+1} = x ^ k - \eta \nabla_x f(x)$) \\
+
+
+
+In certain cases, the objective (i.e. the function to be optimised) is convex and so guaranteed to have only a single minima. In practice, many problems are non-convex and optimisation through gradient based methods is not guaranteed to reach a global minima. There are several ad hoc methods which in practice improve the chances of the model converging, such as vaiable learning rates, multiple random initialisations.    
+
+
+
+
+
+
 \section{Dimensionality Reduction}
 \label{sec:dimred}
 
@@ -196,7 +210,20 @@ The prediction is then taken as the maximum of these probabilities:
 \end{align}
 
 \subsubsection{Negative Log Likelihood}
-To learn the weights $\mathbf{w}$, we again must optimise a loss function. The loss function which we use is the Negative Log Likelihood. We justify the use of this loss function by considering the likelihood expression for $\mathbf{y}$.  
+To learn the weights $\mathbf{w}$, we again must optimise a loss function. The loss function which we use is the Negative Log Likelihood. We justify the use of this loss function by considering the likelihood expression for $\mathbf{y}$, which denotes the probability of observing a particular set of targets given the parameters and features:
+
+\begin{align}
+\mathcal{L}(\mathbf{y}) &:=  \mathbb{P}(\mathbf{y}| \mathbf{w}, \mathbf{X}) \\
+&= \prod_{j=1}^{n}\mathbb{P}(y_j| \mathbf{w}^T\mathbf{x}_j) \tag{Since the observations are independent} \\
+&= \prod_{j=1}^{n}\left(\frac{e^{(\mathbf{w}^T\mathbf{x})_j}}{\sum_{i=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_i}}\right)^{k_i}  \\	 
+\end{align}
+(add ki for one hot encoding etc.)
+
+To find the optimal weights, the maximum likelihood perspective is to take the weights in such a way as to maximise the above likelihood. Now we note that since log is a monotonically increasing function, the maximum x value of the log likelihood is the same as the maximum of the original likelihood. Maximising log likelihood is a common approach, since it often removes exponents and makes for simpler calculations. From our perspective, we want to find a loss function to minimise. We can express the maximisation of the log likelihood as the minimisation of the negative log likelihood. Hence through minimising the negative log likelihood, we will find the weights which give the maximum likelihood solution. We write this explicitly as:
+
+\begin{align}
+-\log\mathcal{L}(\mathbf{y}) = 
+\end{align}
 
 as being which is justified as it is minimising the negative (maximising the positive) of the log (monotone transformation) of the likelihood. 
 
