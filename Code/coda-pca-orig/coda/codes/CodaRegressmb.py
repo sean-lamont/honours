@@ -54,7 +54,7 @@ class CoDA_Regress(nn.Module):
         return pred, reconstruction, A
 
 
-    def fit(self, X, y, lam, lr,  train_size, epochs = 10000):
+    def fit(self, X, y, lam, lr,  train_size, epochs = 1000):
         PATH = os.path.join(os.getcwd(),"model_weights.pth")
         loss_function = Combined_Loss(lam)
         optim = torch.optim.Adam(self.parameters(), lr = lr)

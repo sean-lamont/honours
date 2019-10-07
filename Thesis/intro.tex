@@ -1,34 +1,45 @@
 \chapter{Introduction}
 \label{cha:intro}
-
-
-\section{Thesis Statement}
-\label{sec:thesisstatement}
-I believe A is better than B.
-
-
 \section{Introduction}
-\label{sec:problemstatement}
-Put your introduction here. You could use \textbackslash fix\{ABCDEFG.\} to
-leave your comments, see the box at the left side. \fix{You have to rewrite your
-thesis!!!} 
+Modern advancements in information technology have given us unprecedented amounts of data, which has lead to breakthroughs in many fields. For example, image processing algorithms can exceed human specialists in diagnosing certain illnesses. Autonomous cars promise to transform the transportation industry, and the processing of vast data has allowed us to support the validity of current physics models through gravitational wave detection. These incredible advancements all require the processing of large amounts of data. The extraction of meaningful patterns and relationships within such large data is not possible manually. Developing the algorithms to do so in a correct and efficient way is therefore an important problem. \\\\  
+The discovery of patterns and relationships within data is the domain of Machine Learning (ML). ML is often conflated with Artificial Intelligence (AI), which is instead focused on the creation of intelligent machines and algorithms. An ML algorithm may form part of a larger AI system, but is not an AI system in and of itself. An autonomous car would be an AI system, and the object detection algorithm it uses would be a ML algorithm. ML is not exclusive to AI; it is more commonly used to predict outcomes and extract insights within data for a human to subsequently interpret. Many of these insights would not otherwise be possible without ML methods. Considering the large scope of applications, this makes research in ML a highly active and useful area.  \\
 
+Most ML algorithms make only a few assumptions on the data, hence their application to such broad settings. This being said, there are certain cases where these assumptions do not hold. One important case of this is Compositional Data, which is data that represent relative proportions. Here the absolute value of the data only matters in how it relates to the other components. For example, in geology the amount of each element in a rock composition only matters in relation to the other components. A rock with 2g of iron and 4g of nickel would form the same composition as a rock with 4g of iron and 8g of nickel. Any data which involves percentages or counts summing to a constant falls in this category, and so the scope of such data is very large. Economic data (e.g. GDP and wealth distribution), chemical compositions, and geology (soil or rock compositions) are just a few examples.
 
+Deep learning gravity waves:
+https://www.sciencedirect.com/science/article/pii/S0370269317310390
+
+\section{This Thesis}
+\label{sec:thisthesis}
+Compositional data does not satisfy the standard assumptions required for most ML algorithms. Despite this, it remains common practice to apply these methods to compositional data. This is particularly true for many microbiome studies (\ref{microbiome}). As explained by \cite{Gloor2017}, these studies often ignore the compositional structure inherent to the data. Recent advancements in gene sequencing technology have given us an abundance of this data, and so appropriate analysis is crucial. Even if this structure is acknowledged, current methods for Compositional Data Analysis are severely lacking.  The motivation for this thesis is given by these limitations in Compositional Data Analysis, and the large scope of applications where it is necessary. The thesis will focus on the design and application of a novel Machine Learning model to this problem.\\ 
+
+One of the most common ML applications is to supervised learning problems. For these tasks, you give the algorithm a set of inputs (the features), which it then uses to predict an outcome (the target). Speech recognition, stock market predictions and disease identification are all examples of this. In contrast, unsupervised learning is focused on the analysis of data without targets. Hence there are no predictions to be made here, only pattern recognition. \fix{Add figure, e.g. mapping patient stats to probability of disease} Dimensionality reduction forms a large part of unsupervised learning, and is used to represent data in a lower dimension. For example, if we have a measurement $\mathbf{x} = (x,y,z)$ in 3 dimensions, dimensionality reduction could be used to map $\mathbf{x}$ to a 2D vector $\mathbf{x} \to \mathbf{a} = (a_1,a_2)$. This is usually done to preserve as much information as possible. Say we were measuring the $(x,y,z)$ coordinates of a particle in a straight line. We could map it to one dimension without any loss of information, as it is only moving along one axis. There are several advantages for doing this, such as removing redundant information and improving efficiency. Recent research has provided us with an improved model for dimensionality reduction on compositional data \citep{Avalos2018}, which we use in the development of our model. \\  
+
+Dimensionality reduction is often combined with supervised learning by applying it to the original features, and proceeding to use the low dimensional representation as the new features in a supervised learning model. We know from the literature that this approach can improve model performance in cases of high dimensional data. Microbiome applications study the frequency of different organisms within microbial communities. They often have thousands of features to represent the large diversity within them. It follows that using this kind of approach has the potential to improve performance when doing supervised learning on microbiome data. Our model presents a new way to combine the methods of supervised learning and dimensionality reduction. The conventional approach applies two algorithms sequentially, one for dimensionality reduction and one for supervised learning. We instead propose a model to do both at once. A single, connected model that learns both the supervised learning predictions and the low level representation. The representation is a combination of the targets and an additional term, based on the recent advancements in the area \citep{Avalos2018}. This presents an advantage over the conventional approach, where the dimensionality reduction step is fully unsupervised. \\
+
+We will focus on microbiome studies when testing this model, for two reasons:
+\begin{itemize}
+    \item The improvement in sequencing technologies have made research in this area highly active, with the potential to provide highly useful applications. The amount of data will only continue to grow as technology is further improved, further highlighting the importance of research in this area.
+    \item The data produced by these studies presents several challenges. They often have very large dimensions, as the microbial communities are large. The data is also quite sparse, meaning there are a lot of zeros. These challenges will allow us to test the model to its full potential. 
+\end{itemize} 
+
+The application of supervised learning to microbiome studies covers a range of areas.
+ One of the most useful would be for human health, through studying the organisms present in our stomachs or stool. We can use the frequencies of these organisms as features (which we note are compositional), and the information surrounding them as targets in a supervised learning model. There are numerous potential applications of this. For example, we could use the human gut microbiome to predict what nutrients a person is lacking in their diet. We could also use this to detect early warning signs for diseases which would not otherwise have been noticed. Different people respond differently to the same diets or medicine, and we could potentially use an individuals microbiome profile to customise a diet or treatment plan unique to them. One interesting application beyond the human microbiome was found in a recent Nature study on cattle and sheep \citep{Stewart2019}. Here, they presented results which clearly distinguished high and low methane emitting sheep based on their microbiome. They discuss the potential for manipulating these with the potential to reduce their methane output, which would contribute to a reduction in our emissions. 
 
 \section{Thesis Outline}
 \label{sec:outline}
-How many chapters you have? You may have Chapter~\ref{cha:background},
-Chapter~\ref{cha:design}, Chapter~\ref{cha:methodology},
-Chapter~\ref{cha:result}, and Chapter~\ref{cha:conc}.
+This thesis is structured as follows:
+
+\begin{itemize}
+    \item Chapter~\ref{cha:background}: Background. This chapter provides the reader with the necessary information to understand the design and implementation of our model. We assume the reader has some technical background, with basic linear algebra and multivariate calculus being assumed. 
+    \item Chapter~\ref{cha:design}: Design. In this chapter, we present the details of the design for our model. This includes the high level structure and specific implementation details. We also discuss the associated Python package developed as part of this project. 
+    \item Chapter~\ref{cha:methodology}: Experimental Methodology. This chapter presents the details of how we obtained the results in chapter \ref{cha:result}, how to interpret them, and what data was used.  
+    \item Chapter~\ref{cha:result}: Results. Here the results of the experiments on the model are presented. We showcases the cases where the model works well, and when it does not. We discuss potential reasons why in each case.
+    \item Chapter~\ref{cha:conc}: Conclusion. The final chapter summarises the thesis, and discusses avenues for future work in the area. 
+\end{itemize}
 
 
-\section{Datasets}
 
-3 good example microbiome datasets here:
-
-https://microbiome.github.io/microbiome/Data.html
-
-Using above package and phyloseq R package to process. 
 
 \section{Notes}
 

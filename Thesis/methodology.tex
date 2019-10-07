@@ -45,7 +45,25 @@ The implementation of Machine Learning algorithms on digital computers often lea
 clamping, NaN, exploding gradients, vanishing gradients, learning rates, local optima 
 
 
+\subsection{Hyperparameter Grid Search}
+We will see from the preliminary results using the Aitchinson test data that the choice of hyperparameters can have a large influence on the performance of our model. The goal of our experiments is to determine the conditions under which our model is effective. Appropriate analysis of the hyperparameters is crucial to this understanding. 
 
+
+\subsection{Baselines}
+To test the performance of our model, we need suitable baseline algorithms to compare against. For regression problems, we refer to Ordinary Least Squares Regression (\ref{regression}). For classification, we consider softmax based Logistic Regression presented in \ref{logisticreg}. From these algorithms, we construct the following baseline approaches:
+
+\begin{itemize}
+    \item Naive Regression: This baseline is simply to apply OLS regression directly on the features and targets, in the case of a regression problem 
+    \item Naive Logistic Regression: Similarly, this baseline applies logistic regression directly for classification tasks
+    \item CLR + (Logistic) Regression: This baseline applies the CLR transformation, then standard PCA to preprocess the features. The resulting representation is then used as the features for either Regression or Logistic Regression
+    \item CoDA-PCA + (Logistic) Regression: This baseline applies the CoDA-PCA transformation \citep{Avalos2018}, then standard PCA to preprocess the features. The resulting representation is then used as the features for either Regression or Logistic Regression
+\end{itemize}
+
+
+There are a vast number of methods in the literature which are suitable for regression and classification problems. 
+Undoubtedly, many of these would perform better than our baselines. The baselines we take are chosen to reflect the loss functions which are used in our combined model. We are interested in whether the end to end architecture can improve performance for the reasons we hypothesised (making the representation a function of the targets). Hence by using the baselines as regression and logistic regression, this allows us to isolate the difference in results as being due to the end to end architecture, rather than due to a \\
+
+For classification, use random guess and also pick the most frequent. To ensure the model is actually learning meaningful patterns from the data, it must perform better than a simple "choose most frequent" approach. This prevents drawing false conclusions about model performance when there is a non uniform distribution of classes.
 
 
 

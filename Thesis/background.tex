@@ -9,17 +9,6 @@ In this chapter we introduce the background and motivation for this project, and
     \item Section \ref{sec:sup}: The main applications of supervised learning, regression and classification, are introduced here. 
 \end{itemize} \pagebreak
 
-
-\section{Motivation}
-\label{sec:motivation}
-There is an abundance of scientific data which can be considered compositional, which is to say that the components are non-negative and sum to a constant value. Any data which involves percentages or counts summing to a constant falls in this category, and so the scope of such data is very large. \\
-
-Compositional data does not satisfy the standard assumptions which underlies many common methods of analysis. Despite this, it remains common practice to apply these methods to compositional data. This is particularly true for many microbiome studies, (for which we outline the necessary background in section \ref{microbiome}). As explained by \cite{Gloor2017}, these studies often ignore the compositional structure inherent to the data. Given the recent technological advancements in gene sequencing and the explosion of such data, appropriate analysis is crucial. Even if this structure is acknowledged, current methods for Compositional Data Analysis are severely lacking.   \\
-
-The importance of Compositional Data Analysis is not restricted to microbiome studies, although this is an important area of application. Economic data (e.g. GDP and wealth distribution), chemical compositions, and geology (soil or rock compositions) are just a few examples of data which are compositional. The motivation of this project is thus given by the limitations of current Compositional Data Analysis, and the large scope of applications where it is necessary.   
-
-
-
 \section{Compositional Data}
 \label{sec:comp}
 
@@ -68,36 +57,39 @@ Using this example, we note several points:
  
 \subsection{Compositional Data Analysis (CoDA)}
 \label{coda}
-Given compositional data lies on the simplex, analysis of these data are complicated by the fact that they exist in a non-Euclidean mathematical space. As such, any attempt to compare distances between elements of this space cannot take place in the standard manner. The study of Compositional Data is known as Compositional Data Analysis (CoDA for short) and \cite{Aitchison1982} was the first to treat this issue in depth. At the core of Aitchinson's approach was the idea of a log transformation. For a point on the simplex, applying these transformation embeds the point in Euclidean space facilitating standard distance comparisons. There are several of these transformations, however these all lead to similar results as they only differ by a linear transformation. The most widely used (and most applicable for this project) is the centered log ratio (clr) transformation. Using notation from \cite{Avalos2018}, the clr transformation is formally defined as: $$\mathbf{c}_{KL}(\mathbf{x}) = \log \left(\frac{x}{(\prod_{j=1}^d x_j)^{\frac{1}{d}}}\right)$$  
+Given compositional data lies on the simplex, analysis of these data are complicated by the fact that they exist in a non-Euclidean mathematical space. As such, any attempt to compare distances between elements of this space cannot take place in the standard manner. The study of Compositional Data is known as Compositional Data Analysis (CoDA for short) and \cite{Aitchison1982} was the first to treat this issue in depth. At the core of Aitchinson's approach was the idea of a log transformation. For a point on the simplex, applying such a transformation embeds the point in Euclidean space, facilitating standard distance comparisons. There are several of these transformations, however they lead to similar results as they only differ by a linear transformation. The most widely used (and most applicable for this project) is the centered log ratio (clr) transformation. Using notation from \cite{Avalos2018}, the clr transformation is formally defined as: $$\mathbf{c}_{KL}(\mathbf{x}) = \log \left(\frac{x}{(\prod_{j=1}^d x_j)^{\frac{1}{d}}}\right)$$  
 
 We note that $\mathbf{c}_{KL} : S^{d-1} \to  \mathbb{R}^d$ is a bijective map from $S^{d-1}$ to  $\mathbb{R}^d$ by observing the inverse function which is given by 
-$$\mathbf{c}_{KL}^{-1}(\mathbf{x}) = e^\mathbf{x} \prod_{i=1}^d e^{\frac{x_j}{1-d}}$$ ...
+$$\mathbf{c}_{KL}^{-1}(\mathbf{x}) = e^\mathbf{x} \prod_{i=1}^d e^{\frac{x_j}{1-d}}$$
 
+It follows that this embedding gives a unique value in $\mathbb{R}^d$ for all elements in the simplex $S^{d-1}$. The analysis of the embedded data can therefore be conducted using standard methods without any loss of information. \\
 
-\section{Optimisation}
-\label{optimisation}
-Most machine learning problems can fundamentally be considered as optimisation tasks. That is, we wish to find the extrema of a function, potentially given some constraints. For example, a regression problem can be reduced to the minimisation of the $l_2$ loss. These functions can occasionally be solved analytically, like in the regression case. It is much more common to use gradient based optimisation algorithms, as these analytic solutions are often intractable. Many variants of these algorithms exist, but they are all based on the idea of gradien descent: Given a differentiable function $f(\mathbf{x}) : \mathbb{R}^d \to \mathbb{R}$, the gradient descent algorithm is: (calculate gradient, specify learning rate, initialise $x^*$, step $x^{k+1} = x ^ k - \eta \nabla_x f(x)$) \\
-
-
-
-In certain cases, the objective (i.e. the function to be optimised) is convex and so guaranteed to have only a single minima. In practice, many problems are non-convex and optimisation through gradient based methods is not guaranteed to reach a global minima. There are several ad hoc methods which in practice improve the chances of the model converging, such as vaiable learning rates, multiple random initialisations.    
-
-
-
-
-
+The standard methodology for modern practitioners is to use the analysis of this log transformed data, and relate the conclusions made in the transformed space back to the original domain \citep{Aitchison2003}. This approach is more mathematically grounded than simply using standard methods in the simplex, but still leads to several issues. There are problems with translating interpretations from the new coordinate system back to the original domain. We cannot draw conclusions about the absolute magnitude of quantities, as compositions are inherently relative. We will soon see that the log transformation may also fail to capture relationships in the original domain (Section \ref{codapca}). There have been some attempts to improve upon CoDA techniques, such as hypersphere transformations \citep{} and Dirichlet models \citep{}. As discussed by \cite{}, the hypersphere approach is not fully justified mathematically. Similarly, Dirichlet models make unrealistic assumptions on the data. These issues help justify the need for further research in the area. 
 
 \section{Dimensionality Reduction}
 \label{sec:dimred}
 
-A concept crucial to this thesis is dimensionality reduction. Broadly, this refers to the set of techniques used to represent high dimensional data in a reduced form. Formally, we consider a data matrix $X \in \mathbb{R}^{d \times n}$ with $n$ elements, each with dimension $d$. The goal of dimensionality reduction is then to find what we denote as a representation matrix $A \in \mathbb{R}^{l \times n}$, where $l < d$. Since $l < d$, each column $x_i \in \mathbb{R}^d$ of $X$ will map to a lower dimensional representation $a_i \in \mathbb{R}^l$. This can be interpreted as projection of $x_i$ to a new coordinate system. In practice, it can be useful to consider $A$ as an encoding of $X$. We can then reconstruct an approximation to the original matrix $X$ through a decoding matrix $V \in \mathbb{R}^{l \times d}$. Through this we can obtain a reconstruction of $X$ of the same dimension, which is given by $V^TA \in \mathbb{R}^{d \times n}$. 
+A concept crucial to this thesis is dimensionality reduction. Broadly, this refers to the set of techniques used to represent high dimensional data in a reduced form. Formally, we consider a data matrix $X \in \mathbb{R}^{d \times n}$ with $n$ elements, each with dimension $d$. The goal of dimensionality reduction is then to find what we denote as a representation matrix $A \in \mathbb{R}^{l \times n}$, where $l < d$. Since $l < d$, each column $x_i \in \mathbb{R}^d$ of $X$ will map to a lower dimensional representation $a_i \in \mathbb{R}^l$. This can be interpreted as projection of $x_i$ to a new coordinate system. In practice, it can be useful to consider $A$ as an encoding of $X$. We can then reconstruct an approximation to the original matrix $X$ through a decoding matrix $V \in \mathbb{R}^{l \times d}$. Through this we can obtain a reconstruction of $X$ of the same dimension, which is given by $V^TA \in \mathbb{R}^{d \times n}$. \\
 
-Motivation? (Smaller size, noise,  \citep{Shlens2005}: physics example, redundancy, signal to noise ratio)
+Dimensionality reduction is useful for several reasons: \citep{Shlens2005}: 
+
+\begin{itemize}
+    \item The use of a low level representation of the data leads to smaller memory footprint and quicker algorithms 
+    \item The dimensions which are removed often represent noise in the data, making it easier to find relationships between variables
+    \item When dimensions are highly correlated, changing the coordinate space can remove redundancy
+    \item Taking the low level dimension $l \leq 3$ allows for visualisation of higher dimensional data
+\end{itemize}
 
 There are many different approaches to dimensionality reduction, which seek to find $A$ based on different criteria and assumptions on the underlying data $X$. These approaches can be considered as minimising a distortion (generalised distance)  between functions of the reconstruction $V^TA$ and the orignal matrix $X$. This interpretation was particularly helpful for the paper which inspired this project \citep{Avalos2018}. Below we outline those dimensionality reduction techniques relevant to this research.    
 
 \subsection{Principal Component Analysis (PCA)}
-The most well known dimensionality reduction method is Principal Component Analysis (PCA) \citep{MackiewiczRatajczak1993}. There are several different interpretations of PCA, including SVD, covariance, etc... An intuitive explanation is given by \cite{Shlens2005}, which we draw from. PCA seeks to find a representation matrix $A$ where the covariance matrix of $A$ is diagonalised. As explained by \cite{Shlens2005}, this is desirable as each basis vector for the new coordinate system is uncorrelated, which minimises the shared information between them. This representation can be... 
+The most well known dimensionality reduction method is Principal Component Analysis (PCA) \citep{MackiewiczRatajczak1993}. There are several derivations and interpretations of PCA, with all giving the same final result. An intuitive explanation is given by \cite{Shlens2005}, which we draw from to explain the concept. PCA seeks to find a representation matrix $A$ where the covariance matrix of $A$ is diagonalised. As explained by \cite{Shlens2005}, this is desirable as each basis vector for the new coordinate system is uncorrelated, which minimises the shared information between them. Furthermore, PCA chooses the first basis $\mathbf{v}_1$ of the transformation $\mathbf{V}$ as the direction with maximum variance. The next basis is taken to be the direction with largest variance orthogonal to $\mathbf{v}_1$. This process continues, with $\mathbf{v}_i$ being the direction of maximum variance orthogonal to the subspace spanned by $\mathbf{v}_1, ...,\mathbf{v}_{i-1}$... derivation with $A = VX$... ($X = V^{-1}A = V^TA$, only when deleting dimensions becomes an approximation. $V$ acts only as a rotation to express $X$ in terms of an orthonormal basis) 
+
+
+The process used to find the orthonormal basis in PCA is the Gram-Schmidt \ref{} algorithm. It is also used to compute the Singular Value Decomposition (SVD) of a matrix \ref{}. This is why the SVD can be used to find the PCA projection matrix. The SVD has been highly optimised in many current software packages, and so it is used in practice to compute the projection $V$ given by PCA.  
+
+Add diagram/example! (2D gaussian, data projected onto 1D?)
+
 
 \subsection{Exponential Family PCA}
 Exponential family PCA: Extends PCA analogous to GLMs extending Linear Regression to exponential family. In the same way, allows for loss functions which are more appropriate for the parameter space, where parameters can be non Gaussian. Main example is count data i.e. Poisson which is exponential family. Situation is when data space (e.g. Poisson) is different to parameter space e.g. Reals
@@ -106,11 +98,7 @@ Exponential family PCA: Extends PCA analogous to GLMs extending Linear Regressio
 \label{codapca}
 This thesis primarily builds upon the 2018 NIPS paper on Representation Learning for Compositional Data \citep{Avalos2018}. The main result of the paper is the algorithm CoDA-PCA, which is a method for dimensionality reduction of compositional data. The standard approach to dimensionality reduction prior to this result was to apply PCA to the clr transformed data. CoDA-PCA combines clr with exponential family PCA, which allows PCA to be applied to count data. This simultaneously keeps the data centered through clr, and makes use of a loss function which considers the count nature of the data in the reconstruction error. The improvement can be seen dramatically in the ARMS example presented in the paper, where we see that CoDA-PCA and its variants are the only algorithms which faithfully represent the original data \citep{Avalos2018}, and our software can reproduce this result (Chapter \ref{cha:result}).     
 
-
-
- 
-
-(Maybe have chapter/section on the early experiments with CoDA-PCA, compared to CLR etc. on Aitchinson data)
+add math: bregman divergence, scaled theorem, derivation of loss
 
 
 \section{Supervised Learning}
@@ -118,6 +106,7 @@ This thesis primarily builds upon the 2018 NIPS paper on Representation Learning
 
 
 \subsection{Regression}
+\label{regression}
 \subsubsection{Definition}
 One of the most widely used supervised learning methods is Linear Regression. The setup of regression is simply to estimate a target $y \in \mathbb{R}$ through a linear transformation of the features $\mathbf{x} \in \mathbb{R}^{d}$. For a single observation $\mathbf{x}$, this is done through the weight vector $\mathbf{w}$. The predicted value for $\mathbf{x}$ is then given by:
 \begin{align}
@@ -172,8 +161,7 @@ This solution is a minimum of the loss function $l_{\mathrm{regression}}$ since 
     \mathbf{w}^* &= (\mathbf{X}^T \mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}
 \end{align}
 
-\subsubsection{Regression Example: }
-Here we present an example application of regression, 
+Examples?
 
 
 
@@ -189,6 +177,7 @@ PCR (PCA then Regression), does not consider the response in choosing the repres
 The other key supervised learning problem is classification. In a classification task, the targets $\mathbf{y}$ are now in a discrete set $\{1, ..., k\}$ which we call the classes. Given an observation $\mathbf{x} \in \mathbb{R}^{d}$, the goal is then to predict which class it belongs to i.e. learn a mapping $\mathbf{x} \to \mathbf{y} \in \{1, ..., k\}$. This is referred to as a multi class classification problem, in contrast to the binary case where $\mathbf{y} \in \{0,1\}$. There are myriad ways to solve this problem in the literature. We focus on the multi class logistic regression approach, as the associated loss function will be needed for our model. 
 
 \subsubsection{Multi class Logistic Regression}
+\label{logisticreg}
 Multi class Logistic Regression approaches the classification problem through combining a softmax function with a linear transformation of the features. Formally, for a vector $\mathbf{x}\in \mathbb{R}^d$ we define softmax as a function on each component $x_i \in \mathbf{x}$:
 
 \begin{align}
@@ -198,36 +187,64 @@ Multi class Logistic Regression approaches the classification problem through co
 As with Regression, we have a linear transformation of the features $\mathbf{w}^T\mathbf{x}$. The softmax is then applied to this transformation, which gives the predicted probabilities for each class: 
 
 \begin{align}
-   \mathbb{P}(\hat{y} = j | \mathbf{w}^T\mathbf{x}) &= S((\mathbf{w}^T\mathbf{x})_j)\\
-   &=  \frac{e^{(\mathbf{w}^T\mathbf{x})_j}}{\sum_{i=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_i}} 
+   \mathbb{P}(\hat{y} = i | \mathbf{w}^T\mathbf{x}) &= S((\mathbf{w}^T\mathbf{x})_i)\\
+   &=  \frac{e^{(\mathbf{w}^T\mathbf{x})_i}}{\sum_{k'=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_{k'}}} \\
+   &:= p_i
 \end{align}
 
 The prediction is then taken as the maximum of these probabilities:
 
 \begin{align}
-   \hat{y} &= \arg \max_j S((\mathbf{w}^T\mathbf{x})_j)\\
-   &= \arg\max_j \frac{e^{(\mathbf{w}^T\mathbf{x})_j}}{\sum_{i=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_i}} 
+   \hat{y} &= \arg \max_i S((\mathbf{w}^T\mathbf{x})_i)\\
+   &= \arg\max_i \frac{e^{(\mathbf{w}^T\mathbf{x})_i}}{\sum_{k'=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_{k'}}} \\
+   &= \arg\max_i p_i
 \end{align}
 
 \subsubsection{Negative Log Likelihood}
-To learn the weights $\mathbf{w}$, we again must optimise a loss function. The loss function which we use is the Negative Log Likelihood. We justify the use of this loss function by considering the likelihood expression for $\mathbf{y}$, which denotes the probability of observing a particular set of targets given the parameters and features:
+To learn the weights $\mathbf{w}$, we again must optimise a loss function. The loss function which we use is the Negative Log Likelihood. We justify the use of this loss function by considering the likelihood expression for $\mathbf{y}$. The likelihood denotes the probability of observing a particular set of targets under a model given the parameters and features. For a given set of targets $\mathbf{y}$, we specify the outcome of the $j$th component $y_j$ using a one hot encoding. This encoding assigns to each $y_j$ a vector in $\{0,1\}^k$. For $i\in \{1,..,k\}$, each component $(k_j)_i \in \{0,1\}$  of $y_j$ acts as a binary indicator for whether $y_j$ is in class $i$. For example, if $y_j$ is in class 2, then under the one hot encoding $y_j = (0,1,0,0,..)$. Under this encoding, the likelihood of a single observed target $y_j$  given the corresponding feature vector $\mathbf{x_j}$ and parameters $\mathbf{w}$ is therefore:
+\begin{align}
+    \mathbb{P}(y_j| \mathbf{w}^T\mathbf{x}_j) &= \prod_{i=1}^{k}  \mathbb{P}(\hat{y} = i | \mathbf{w}^T\mathbf{x}_j)^{(k_j)_i} \\
+    &=\prod_{i=1}^{k}  \left(\frac{e^{(\mathbf{w}^T\mathbf{x})_i}}{\sum_{k'=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_{k'}}}\right)^{(k_j)_i} \\
+    &=\prod_{i=1}^{k}  p_i^{(k_j)_i} \\
+    &= p_i^{j'} \tag{where $j'$ is the index where $(k_j)_i = 1$} \\
+\end{align}
+Put simply, the likelihood of an observed $y_j$ is just the probability under the model of the class which $y_j$ is observed to be. The likelihood of the whole set of targets $\mathbf{y}$ is thus given by:
 
 \begin{align}
 \mathcal{L}(\mathbf{y}) &:=  \mathbb{P}(\mathbf{y}| \mathbf{w}, \mathbf{X}) \\
 &= \prod_{j=1}^{n}\mathbb{P}(y_j| \mathbf{w}^T\mathbf{x}_j) \tag{Since the observations are independent} \\
-&= \prod_{j=1}^{n}\left(\frac{e^{(\mathbf{w}^T\mathbf{x})_j}}{\sum_{i=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_i}}\right)^{k_i}  \\	 
+&= \prod_{j=1}^{n}\prod_{i=1}^{k}  \left(\frac{e^{(\mathbf{w}^T\mathbf{x})_i}}{\sum_{k'=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_{k'}}}\right)^{(k_j)_i} \\	
+&= \prod_{j=1}^{n}\prod_{i=1}^{k}p_i^{(k_j)_i} \\	
 \end{align}
-(add ki for one hot encoding etc.)
 
 To find the optimal weights, the maximum likelihood perspective is to take the weights in such a way as to maximise the above likelihood. Now we note that since log is a monotonically increasing function, the maximum x value of the log likelihood is the same as the maximum of the original likelihood. Maximising log likelihood is a common approach, since it often removes exponents and makes for simpler calculations. From our perspective, we want to find a loss function to minimise. We can express the maximisation of the log likelihood as the minimisation of the negative log likelihood. Hence through minimising the negative log likelihood, we will find the weights which give the maximum likelihood solution. We write this explicitly as:
 
 \begin{align}
--\log\mathcal{L}(\mathbf{y}) = 
+-\log\mathcal{L}(\mathbf{y}) &= -\log \prod_{j=1}^{n}\prod_{i=1}^{k}p_i^{(k_j)_i} \\ 
+&= -\sum_{j=1}^{n}\sum_{i=1}^{k}\log (p_i^{(k_j)_i})\\
+&= -\sum_{j=1}^{n}\sum_{i=1}^{k}(k_j)_i\log p_i \tag{where $p_i = \frac{e^{(\mathbf{w}^T\mathbf{x})_i}}{\sum_{k'=1}^{k} e^{(\mathbf{w}^T\mathbf{x})_{k'}}}$}
 \end{align}
 
-as being which is justified as it is minimising the negative (maximising the positive) of the log (monotone transformation) of the likelihood. 
+We thus have the above expression forming the loss function to optimise. Unlike the regression loss, the above loss function has no know analytical solution \ref{}. It must therefore be optimised using gradient based methods discussed in the following section, \ref{optimisation}.
+
+\subsection{Neural Networks}
+\subsubsection{Autoendcoders}
 
 
+
+\section{Optimisation}
+\label{optimisation}
+Most machine learning problems can fundamentally be considered as optimisation tasks. That is, we wish to find the extrema of a function, potentially given some constraints. For example, a regression problem can be reduced to the minimisation of the $l_2$ loss. These functions can occasionally be solved analytically, like in the regression case. It is much more common to use gradient based optimisation algorithms, as these analytic solutions are often intractable or nonexistent. Many variants of these algorithms exist, but they are all based on the idea of gradien descent: Given a differentiable function $f(\mathbf{x}) : \mathbb{R}^d \to \mathbb{R}$, the gradient descent algorithm is: (calculate gradient, specify learning rate, initialise $x^*$, step $x^{k+1} = x ^ k - \eta \nabla_x f(x)$) \\
+
+
+
+In certain cases, the objective (i.e. the function to be optimised) is convex and so guaranteed to have unique minima \footnote{This does not guarantee the existence of the minima, as we saw with the negative log likelihood loss used for logistic regression}.  In practice, many problems are non-convex and optimisation through gradient based methods is not guaranteed to reach a global minima. There are several ad hoc methods which in practice improve the chances of the model converging, such as vaiable learning rates, multiple random initialisations.    
+
+add saddle point example, 
+
+\subsection{Reconstruction Error}
+\label{reconerror}
+ It is widely known that the use of dimensionality reduction prior to the application of supervised learning models can improve performance (see, for example, \cite{HOWLEY2006363}). There is some speculation as to exactly why this is the case, as these methods reduce the amount of information present in the data. The improvement in accuracy is mostly seen for high dimensional data, for which the widely known "curse of dimensionality" reduces model performance. The reduction of the input dimension facilitates lower computational cost and faster convergence of algorithms, and so greater performance. In practical cases of small training examples, higher dimensional data prevents many models from recognising patterns in noisy data. It is also claimed that principal components explaining less variance correspond to noise in the data. Under this view, the removal of these components would help to reduce overfitting by ensuring the model is fitted only to the useful parts of the data. Whatever the reason, supervised learning performance can be improved by dimensionality reduction on the features, and this forms the motivation for our model. Conventionally, dimensionality reduction is first performed to obtain a low level representation of $X$, which we denote as $A$. The matrix $A$ is then used as input to a supervised learning algorithm. Such an approach constructs $A$ with no regard to the performance of the supervised learning, only optimising based on a reconstruction loss. 
 
 
 \section{Microbiome}
@@ -260,9 +277,7 @@ Useful for comparisons between organisms metagenomes, compare taxonomic content 
 
 
 
-\subsection{Reconstruction Error}
-\label{reconerror}
- It is widely known that the use of dimensionality reduction prior to the application of supervised learning models can improve performance (see, for example, \cite{HOWLEY2006363}). There is some speculation as to exactly why this is the case, as these methods reduce the amount of information present in the data. The improvement in accuracy is mostly seen for high dimensional data, for which the widely known "curse of dimensionality" reduces model performance. The reduction of the input dimension facilitates lower computational cost and faster convergence of algorithms, and so greater performance. In practical cases of small training examples, higher dimensional data prevents many models from recognising patterns in noisy data. It is also claimed that principal components explaining less variance correspond to noise in the data. Under this view, the removal of these components would help to reduce overfitting by ensuring the model is fitted only to the useful parts of the data. Whatever the reason, supervised learning performance can be improved by dimensionality reduction on the features, and this forms the motivation for our model. Conventionally, dimensionality reduction is first performed to obtain a low level representation of $X$, which we denote as $A$. The matrix $A$ is then used as input to a supervised learning algorithm. Such an approach constructs $A$ with no regard to the performance of the supervised learning, only optimising based on a reconstruction loss. 
+
 
 
 

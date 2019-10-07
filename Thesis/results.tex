@@ -13,6 +13,9 @@ In this chapter we present the results of the experiments performed on the end t
 
 \section{Toy Example: Gaussian data}
 \label{toygauss}
+%https://link.springer.com/content/pdf/10.1023%2FA%3A1023818214614.pdf 
+for creating compositional data with orthonormal bases
+
 The first situation where we will test our model is a synthetic dataset. We want this data constructed in such a way as to test the underlying hypothesis motivating the model in \ref{design}. That is, our end to end model can improve performance in cases where standard dimensionality reduction removes potentially useful information.
 
 In order to appropriately test this, we therefore want our data to contain useful information which we expect standard methods to ignore. The approach we take to construct this is to take a $d$ dimensional Gaussian, with mutually independent components for simplicity. The covariance matrix is then composed of the diagonal variance entries of each dimension. The important point here is to set the variance of each dimension to be largely different in magnitude. Since the covariance between dimensions is zero, we would expect the coordinate system of dimensionality reduction methods to be focused on the axes with the largest variance. We expect this coordinate system to contain little information on the lower variance dimensions.  If the supervised learning target is a function of these lower dimensions, we would therefore expect to see low performance when using these as features. In contrast, the use of a combined model has the signal of supervised loss as a factor in the choice of representation. It should choose a representation which still preserves the important information in the lower variance features. So we expect to see an improvement in performance for this type of data when using our model in comparison to baseline methods. \\
